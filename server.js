@@ -7,7 +7,7 @@ app.use(express.json())
 const AgencyDB = require('./models/agency')
 const ClientDB = require('./models/client')
 
-mongoose.connect('mongodb://localhost:27017/AgencyDB', {useNewUrlParser: true})
+mongoose.connect('mongodb+srv://root:root@cluster0.sipbfgg.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true})
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to database'))
