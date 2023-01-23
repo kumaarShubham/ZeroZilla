@@ -1,0 +1,36 @@
+###
+
+POST http://localhost:3000/
+Content-Type: application/json
+
+{
+    "agency": {
+      "agencyID": 4,
+      "name": "Deena Rogers",
+      "address1": "422 Monument Walk",
+      "address2": 9993,
+      "state": "Ohio",
+      "city": "Condon",
+      "phoneNumber": "(908) 530-3142"
+    },
+    "client": {
+      "clientId": "C2378",
+      "name": "Ross Walters",
+      "email": "rosswalters@edecine.com",
+      "phoneNumber": "(966) 587-2961",
+      "totalBill": 8183
+    }
+}
+
+###
+
+GET http://localhost:3000/A12
+
+###
+
+PATCH http://localhost:3000/C2378
+Content-Type: application/json
+
+{
+    "email": "newemail@gmail.com"
+}
