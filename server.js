@@ -6,34 +6,38 @@ app.use(express.json())
 const AgencyDB = require('./models/agency')
 const ClientDB = require('./models/client')
 
-mongoose.connect('mongodb+srv://root:root@cluster0.sipbfgg.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true})
-const db = mongoose.connection
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('Connected to database'))
+try{
+    mongoose.connect('mongodb+srv://root:root@cluster0.sipbfgg.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true})
+    const db = mongoose.connection
+    db.on('error', (error) => console.error(error))
+    db.once('open', () => console.log('Connected to database'))
+}
+catch(err){
+    console.log('Error:', err)
+}
 
 // Create an agency and a client
-app.post('/', async (req, res) => {
-
-    const newAgency = new AgencyDB({
-        AgencyId: req.body.agency.agencyID,
-        Name: req.body.agency.name,
-        Address1: req.body.agency.address1,
-        Address2: req.body.agency.address2,
-        State: req.body.agency.state,
-        City: req.body.agency.city,
-        PhoneNumber: req.body.agency.phoneNumber,
-    })
-
-    const newClient = new ClientDB({
-        ClientId: req.body.client.clientId,
-        AgencyId: newAgency.AgencyId,
-        Name: req.body.client.name,
-        Email: req.body.client.email,
-        PhoneNumber: req.body.client.phoneNumber,
-        TotalBill: req.body.client.totalBill
-    })
-
+app.post('/', async (req, res) => {    
     try{
+        const newAgency = new AgencyDB({
+            AgencyId: req.body.agency.agencyID,
+            Name: req.body.agency.name,
+            Address1: req.body.agency.address1,
+            Address2: req.body.agency.address2,
+            State: req.body.agency.state,
+            City: req.body.agency.city,
+            PhoneNumber: req.body.agency.phoneNumber,
+        })
+    
+        const newClient = new ClientDB({
+            ClientId: req.body.client.clientId,
+            AgencyId: newAgency.AgencyId,
+            Name: req.body.client.name,
+            Email: req.body.client.email,
+            PhoneNumber: req.body.client.phoneNumber,
+            TotalBill: req.body.client.totalBill
+        })
+        
         const agency = await newAgency.save()
         const client = await newClient.save()
         res.status(201).json({agency: agency, client: client})
