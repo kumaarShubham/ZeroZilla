@@ -19,6 +19,7 @@ catch(err){
 // Create an agency and a client
 app.post('/', async (req, res) => {    
     try{
+        console.log('API Hit: POST /');
         const newAgency = new AgencyDB({
             AgencyId: req.body.agency.agencyID,
             Name: req.body.agency.name,
@@ -37,7 +38,7 @@ app.post('/', async (req, res) => {
             PhoneNumber: req.body.client.phoneNumber,
             TotalBill: req.body.client.totalBill
         })
-        
+
         const agency = await newAgency.save()
         const client = await newClient.save()
         res.status(201).json({agency: agency, client: client})
@@ -50,6 +51,7 @@ app.post('/', async (req, res) => {
 // Update a client
 app.patch('/:id', async (req, res) => {
     try{
+        console.log('API Hit: PATCH /:id');
         const client = await ClientDB.findOneAndUpdate({ClientId: req.params.id}, {Email: req.body.email})
         res.status(201).json(client)
     } catch(err){
@@ -60,6 +62,7 @@ app.patch('/:id', async (req, res) => {
 // Find clients by AgencyId
 app.get('/:id', async (req, res) => {
     try{
+        console.log('API Hit: GET /:id');
         const groupByAgencies = await ClientDB.aggregate([
             {
                 $group: { _id: "$AgencyId", totalBill: { $sum: "$TotalBill" } }
@@ -86,8 +89,9 @@ app.get('/:id', async (req, res) => {
 })
 
 // Find all clients
-app.patch('/', async (req, res) => {
+app.get('/', async (req, res) => {
     try{
+        console.log('API Hit: GET /');
         const clients = await ClientDB.find()
         res.status(200).json(clients)
     } catch(err){
