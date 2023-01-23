@@ -46,7 +46,6 @@ app.post('/', async (req, res) => {
 // Update a client
 app.patch('/:id', async (req, res) => {
     try{
-        console.log(req.body);
         const client = await ClientDB.findOneAndUpdate({ClientId: req.params.id}, {Email: req.body.email})
         res.status(201).json(client)
     } catch(err){
@@ -79,6 +78,16 @@ app.get('/:id', async (req, res) => {
         res.json(result)
     } catch(err){
         res.status(500).json({message: err.message})
+    }
+})
+
+// Find all clients
+app.patch('/', async (req, res) => {
+    try{
+        const clients = await ClientDB.find()
+        res.status(200).json(clients)
+    } catch(err){
+        res.status(400).json({message: err.message})
     }
 })
 
